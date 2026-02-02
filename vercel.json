@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build --workspace=front",
   "outputDirectory": "front/dist",
   "installCommand": "npm install",
   "rewrites": [
