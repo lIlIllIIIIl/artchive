@@ -1,0 +1,21 @@
+{
+  "name": "artchive",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "run-p dev:back dev:front",
+    "dev:back": "tsx back/index.ts",
+    "dev:front": "npm run dev --workspace=front",
+    "build": "npm run build --workspace=front",
+    "build:back": "npm run start --workspace=back",
+    "start:back": "npm run start --workspace=back",
+    "preview": "npm run preview --workspace=front"
+  },
+  "workspaces": [
+    "back",
+    "front"
+  ],
+  "devDependencies": {
+    "npm-run-all2": "^6.1.2"
+  }
+}
