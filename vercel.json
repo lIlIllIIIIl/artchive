@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build:vercel -w front",
+  "buildCommand": "npx vite build --config front/vite.config.ts",
   "outputDirectory": "front/dist",
   "installCommand": "npm install",
   "rewrites": [
