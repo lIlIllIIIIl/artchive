@@ -29,7 +29,10 @@ export async function fetchAllArtists() {
   return data
 }
 
-export async function fetchArtist(artist: string): Promise<{ artist: ImageWithAuthor['author'][]; images: string[] }> {
+export async function fetchArtist(artist: string): Promise<{
+  artist: { id: string; name: string; twitter: string; instagram: string; shop: string }[]
+  images: string[]
+}> {
   const res = await fetch(`${API_BASE}/artist?artist=${encodeURIComponent(artist)}`)
   const data = await res.json()
   if (Array.isArray(data)) return { artist: [], images: [] }
