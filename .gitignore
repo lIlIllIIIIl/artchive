@@ -1,0 +1,16 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+package-lock.json
+
+# Back
+back/dist
+
+# Front
+front/coverage
+*.tsbuildinfo
