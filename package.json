@@ -2,6 +2,9 @@
   "name": "artchive",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "run-p dev:back dev:front",
     "dev:back": "tsx back/index.ts",

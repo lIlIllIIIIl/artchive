@@ -46,10 +46,11 @@ Voir `docs/DATA_AND_STORAGE.md` pour les alternatives à Supabase (D1, Turso) et
 Le projet est prêt pour un déploiement sur Vercel (front SPA + API serverless).
 
 1. **Lier le dépôt** : [vercel.com](https://vercel.com) → New Project → importer le repo Git.
-2. **Variables d’environnement** (Settings → Environment Variables) — à renseigner pour que l’API fonctionne :
+2. **Racine du projet** : dans **Settings → General → Root Directory**, laisser **vide** (ou `.`). Ne pas mettre `back` ni `front` — le build et les routes API partent de la racine du dépôt.
+3. **Variables d’environnement** (Settings → Environment Variables) — à renseigner pour que l’API fonctionne :
    - **D1** : `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`, `D1_DATABASE_ID`
    - **R2** : `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` ; optionnel : `R2_BUCKET`, `R2_ENDPOINT`
-3. **Build** : Vercel utilise `vercel.json` (build du front, output `front/dist`, routes API dans `api/`).
-4. **Front** : en production l’API est appelée en relatif (`/api/...`). Pour une autre origine, définir `VITE_API_URL`.
+4. **Build** : Vercel utilise `vercel.json` (build du front, output `front/dist`, routes API dans `api/`).
+5. **Front** : en production l’API est appelée en relatif (`/api/...`). Pour une autre origine, définir `VITE_API_URL`.
 
 En local, le back Fastify reste sur le port 3000 ; en prod, les routes sont exposées sous `/api/*` via les serverless functions.
