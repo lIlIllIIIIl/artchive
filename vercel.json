@@ -3,11 +3,6 @@
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "outputDirectory": "front/dist",
-  "functions": {
-    "api/*.ts": {
-      "runtime": "nodejs20.x"
-    }
-  },
   "headers": [
     {
       "source": "/assets/(.*)",
