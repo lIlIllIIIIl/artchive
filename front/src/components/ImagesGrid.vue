@@ -15,7 +15,6 @@ const props = withDefaults(
 )
 
 const initImagesUrlArray = ref<ImageWithAuthor[]>([])
-const nextOffset = ref<number | null>(0)
 const displayedImage = ref(0)
 const nbCols = ref(12)
 const maxImageSizeInCols = ref(4)
@@ -25,39 +24,36 @@ const xStart = ref(1)
 const deletedCol = ref(0)
 const focusedImageIndex = ref<number | null>(null)
 const containerRefs = ref<(HTMLElement | null)[]>([])
-const isLoadingImages = ref(false)
-const scrollEndRef = ref<HTMLElement | null>(null)
-let intersectionObserver: IntersectionObserver | null = null
+const IMAGES_PAGE_LIMIT = 30
 
-const IMAGES_PAGE_LIMIT = 20
+// "Découvrir de nouvelles images" - hover fill circle
+const discoverHoverProgress = ref(0)
+let discoverHoverInterval: ReturnType<typeof setInterval> | null = null
+const DISCOVER_FILL_DURATION = 1500
+const DISCOVER_TICK_MS = 16
 
-async function getMoreImages() {
-  if (nextOffset.value === null) {
-    return
+function stopDiscoverFill() {
+  if (discoverHoverInterval) {
+    clearInterval(discoverHoverInterval)
+    discoverHoverInterval = null
   }
-  isLoadingImages.value = true
-  const excludeIds = initImagesUrlArray.value.map((img) => img.id).filter(Boolean)
-  const data = await fetchImagesWithAuthors(IMAGES_PAGE_LIMIT, excludeIds)
-  initImagesUrlArray.value = [...initImagesUrlArray.value, ...data.images]
-  nextOffset.value = data.nextOffset
-  isLoadingImages.value = false
+  discoverHoverProgress.value = 0
 }
 
-function setupScrollObserver() {
-  if (intersectionObserver || !scrollEndRef.value) {
+function startDiscoverFill() {
+  if (discoverHoverInterval) {
     return
   }
-  intersectionObserver = new IntersectionObserver(
-    (entries) => {
-      const entry = entries[0]
-      if (!entry?.isIntersecting || isLoadingImages.value || nextOffset.value === null) {
-        return
-      }
-      getMoreImages()
-    },
-    { rootMargin: '200px', threshold: 0 },
-  )
-  intersectionObserver.observe(scrollEndRef.value)
+  discoverHoverProgress.value = 0
+  const increment = (100 / DISCOVER_FILL_DURATION) * DISCOVER_TICK_MS
+  discoverHoverInterval = setInterval(() => {
+    discoverHoverProgress.value = Math.min(100, discoverHoverProgress.value + increment)
+    if (discoverHoverProgress.value >= 100) {
+      stopDiscoverFill()
+      window.scrollTo(0, 0)
+      window.location.reload()
+    }
+  }, DISCOVER_TICK_MS)
 }
 
 onMounted(async () => {
@@ -67,10 +63,7 @@ onMounted(async () => {
     if (!props.artistData) {
       const data = await fetchImagesWithAuthors(IMAGES_PAGE_LIMIT, [])
       initImagesUrlArray.value = data.images
-      nextOffset.value = data.nextOffset
       emit('imagesLoaded')
-      await nextTick()
-      setupScrollObserver()
     } else {
       const author = props.artistData.artist?.[0] ?? null
       initImagesUrlArray.value = props.artistData.images.map((url) => ({
@@ -78,7 +71,6 @@ onMounted(async () => {
         url,
         author,
       }))
-      nextOffset.value = null
       emit('imagesLoaded')
     }
   } catch {
@@ -87,15 +79,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  intersectionObserver?.disconnect()
-  intersectionObserver = null
-})
-
-watch(nextOffset, (value) => {
-  if (value === null) {
-    intersectionObserver?.disconnect()
-    intersectionObserver = null
-  }
+  stopDiscoverFill()
 })
 
 async function getSize(imageLoaded: HTMLImageElement) {
@@ -296,17 +280,43 @@ async function focusImage(_event: MouseEvent, index: number) {
     </div>
 
     <div
-      v-if="nextOffset !== null"
-      ref="scrollEndRef"
-      class="scroll-end"
-      aria-hidden="true"
+      v-if="!artistData"
+      class="discover-section hoverable"
+      role="button"
+      tabindex="0"
+      aria-label="Découvrir de nouvelles images"
+      @mouseenter="startDiscoverFill"
+      @mouseleave="stopDiscoverFill"
+      @keydown.enter.prevent="startDiscoverFill"
+      @keydown.space.prevent="startDiscoverFill"
+      @keyup.enter="stopDiscoverFill"
+      @keyup.space="stopDiscoverFill"
     >
-      <img
-        v-if="isLoadingImages"
-        class="loader"
-        src="@/assets/icons/loader.svg"
-        alt=""
-      />
+      <span class="discover-text">Découvrir de nouvelles images</span>
+      <svg
+        class="discover-circle"
+        viewBox="0 0 32 32"
+        aria-hidden="true"
+      >
+        <circle
+          class="discover-circle-bg"
+          cx="16"
+          cy="16"
+          r="14"
+          fill="none"
+          stroke-width="2"
+        />
+        <circle
+          class="discover-circle-fill"
+          cx="16"
+          cy="16"
+          r="14"
+          fill="none"
+          stroke-width="2"
+          stroke-dasharray="87.96"
+          :stroke-dashoffset="87.96 - (87.96 * discoverHoverProgress) / 100"
+        />
+      </svg>
     </div>
   </div>
 </template>
@@ -367,15 +377,38 @@ async function focusImage(_event: MouseEvent, index: number) {
   }
 }
 
-.scroll-end {
-  width: 100%;
+.discover-section {
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-bottom: 2vh;
-  min-height: 60px;
+  gap: 12px;
+  padding: 3rem 0 4rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
 
-  .loader {
-    max-width: 50px;
+  &:hover {
+    opacity: 0.9;
+  }
+
+  .discover-text {
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+  }
+
+  .discover-circle {
+    width: 20px;
+    height: 20px;
+    transform: rotate(-90deg);
+
+    .discover-circle-bg {
+      stroke: currentColor;
+      opacity: 0.3;
+    }
+
+    .discover-circle-fill {
+      stroke: currentColor;
+      transition: stroke-dashoffset 0.05s linear;
+    }
   }
 }
 </style>
