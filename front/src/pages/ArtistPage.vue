@@ -2,7 +2,16 @@
 // <a target="_blank" href="https://icons8.com/icon/8824/twitter">Twitter</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 import ImagesGrid from "@/components/ImagesGrid.vue";
 
+import twitterIcon from "@/assets/icons/twitter.svg";
+import instagramIcon from "@/assets/icons/instagram.svg";
+import shopIcon from "@/assets/icons/shop.svg";
 import { fetchArtist } from "@/composable/fetchData";
+
+const iconMap: Record<string, string> = {
+  twitter: twitterIcon,
+  instagram: instagramIcon,
+  shop: shopIcon,
+};
 import { useRoute, onBeforeRouteUpdate } from "vue-router";
 
 import type { ArtistData, Artist, ArtistLinks } from "@/types/main";
@@ -66,7 +75,7 @@ function activatePopupImage(data: string) {
         @mouseenter="activatePopupArtist(key, data)"
         @mouseleave="$emit('disablePopup')"
       >
-        <img class="artist_link-icon" :src="`src/assets/icons/${key}.svg`" />
+        <img v-if="iconMap[key]" class="artist_link-icon" :src="iconMap[key]" :alt="key" />
       </a>
     </div>
   </div>
