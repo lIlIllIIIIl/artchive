@@ -8,6 +8,7 @@ const route = useRoute();
 
 const words = ref(["VueJS", "Animation", "Effet", "Hover"]);
 const currentWord = ref<string>("");
+const currentArtistIndex = ref(0);
 const isRevealDone = ref<boolean>(false);
 const displayText = ref<string>("");
 const revealInterval = ref<any>(null);
@@ -39,8 +40,10 @@ function startReveal() {
   stopIntervals();
   // Choisir un mot au hasard et l’assigner à currentWord
 
-  currentWord.value =
-    words.value[Math.floor(Math.random() * words.value.length)];
+  if (words.value.length === 0) return;
+
+  currentWord.value = words.value[currentArtistIndex.value];
+  currentArtistIndex.value = (currentArtistIndex.value + 1) % words.value.length;
   let index = 0;
   isRevealDone.value = false;
 
@@ -60,7 +63,7 @@ function startReveal() {
       isRevealDone.value = true;
     }
 
-    emit("activatePopup", `See ${displayText.value}'s artist page'`);
+    emit("activatePopup", `Click to see ${displayText.value}'s page'`);
   }, 40);
 }
 
@@ -89,8 +92,13 @@ watch(
   () => route.query.artist,
   async () => {
     await updateWords();
+    currentArtistIndex.value = 0;
   },
 );
+
+watch(words, () => {
+  currentArtistIndex.value = 0;
+});
 
 onBeforeUnmount(() => {
   stopIntervals();
