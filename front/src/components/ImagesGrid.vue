@@ -26,7 +26,6 @@ const focusedImageIndex = ref<number | null>(null)
 const containerRefs = ref<(HTMLElement | null)[]>([])
 const IMAGES_PAGE_LIMIT = 30
 
-// "Découvrir de nouvelles images" - hover fill circle
 const discoverHoverProgress = ref(0)
 let discoverHoverInterval: ReturnType<typeof setInterval> | null = null
 const DISCOVER_FILL_DURATION = 1500
@@ -284,7 +283,7 @@ async function focusImage(_event: MouseEvent, index: number) {
       class="discover-section hoverable"
       role="button"
       tabindex="0"
-      aria-label="Découvrir de nouvelles images"
+      aria-label="Discover new artworks"
       @mouseenter="startDiscoverFill"
       @mouseleave="stopDiscoverFill"
       @keydown.enter.prevent="startDiscoverFill"
@@ -292,7 +291,7 @@ async function focusImage(_event: MouseEvent, index: number) {
       @keyup.enter="stopDiscoverFill"
       @keyup.space="stopDiscoverFill"
     >
-      <span class="discover-text">Découvrir de nouvelles images</span>
+      <span class="discover-text">Discover new artworks</span>
       <svg
         class="discover-circle"
         viewBox="0 0 32 32"
