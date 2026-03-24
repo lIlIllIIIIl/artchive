@@ -2,6 +2,7 @@
 import Cursor from "./components/Cursor.vue";
 import GlobalMenu from "./components/GlobalMenu.vue";
 import PopupInformation from "./components/PopupInformation.vue";
+import WelcomeIntroModal from "./components/WelcomeIntroModal.vue";
 
 const popupInformation = ref<string>("");
 const popupState = ref<boolean>(false);
@@ -19,6 +20,8 @@ function disablePopup() {
 
 <template>
   <Cursor />
+
+  <WelcomeIntroModal />
 
   <PopupInformation
     class="popupInformation"
