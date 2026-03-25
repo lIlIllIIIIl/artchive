@@ -24,7 +24,7 @@ const xStart = ref(1)
 const deletedCol = ref(0)
 const focusedImageIndex = ref<number | null>(null)
 const containerRefs = ref<(HTMLElement | null)[]>([])
-const IMAGES_PAGE_LIMIT = 30
+const IMAGES_PAGE_LIMIT = 20
 
 const discoverHoverProgress = ref(0)
 let discoverHoverInterval: ReturnType<typeof setInterval> | null = null
@@ -218,6 +218,7 @@ function openImageAt(index: number) {
   document.body.style.overflow = 'hidden'
   gsap.set(image, { position: 'fixed', transformOrigin: 'center', top: rect.top, left: rect.left })
   gsap.to(image, {
+    overflow: 'visible',
     top: '50%',
     left: '50%',
     width: newSize.width + 'px',
