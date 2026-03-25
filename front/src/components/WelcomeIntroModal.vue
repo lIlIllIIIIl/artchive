@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import CrossIcon from '@/assets/icons/CrossIcon.vue';
-
 const SESSION_KEY = 'artchive_welcome_intro_seen';
 
 /** Surcharge possible avec VITE_TWITTER_URL dans front/.env */
@@ -177,14 +175,6 @@ const translationNoteText = computed(() => {
               {{ opt.label }}
             </button>
           </div>
-          <button
-            type="button"
-            class="welcome_close"
-            aria-label="Close"
-            @click="dismiss"
-          >
-            <CrossIcon color="#191919" />
-          </button>
         </div>
 
         <h2 :id="`welcome-title-${locale}`" class="welcome_title">
@@ -203,7 +193,11 @@ const translationNoteText = computed(() => {
             {{ p }}
           </p>
         </div>
-        <button type="button" class="welcome_dismiss" @click="dismiss">
+        <button
+          type="button"
+          class="welcome_dismiss hoverable"
+          @click="dismiss"
+        >
           {{ activeCopy.dismiss }}
         </button>
         <a
@@ -247,10 +241,6 @@ const translationNoteText = computed(() => {
 }
 
 .welcome_top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.75rem;
   margin-bottom: 0.85rem;
 }
 
@@ -258,8 +248,6 @@ const translationNoteText = computed(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  flex: 1;
-  min-width: 0;
 }
 
 .lang_btn {
@@ -282,22 +270,6 @@ const translationNoteText = computed(() => {
   background: #191919;
   color: #f2f2f2;
   border-color: #191919;
-}
-
-.welcome_close {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-  border: none;
-  background: transparent;
-  cursor: none !important;
-  border-radius: 0.25rem;
-
-  &:hover {
-    opacity: 0.65;
-  }
 }
 
 .welcome_title {
