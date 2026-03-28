@@ -8,6 +8,9 @@
 :root {
   --color-background: var(--vt-c-black);
   --color-text: var(--vt-c-white);
+
+  --font-sans: Lato, sans-serif;
+  --font-google: Quantico, sans-serif;
 }
 
 *,
@@ -26,23 +29,22 @@ body {
     color 0.5s,
     background-color 0.5s;
   line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    "Fira Sans",
-    "Droid Sans",
-    "Helvetica Neue",
-    sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a {
+  font-family: var(--font-google, var(--font-sans));
 }
 
 a {
