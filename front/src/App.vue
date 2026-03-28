@@ -49,10 +49,6 @@ function disablePopup() {
 </template>
 
 <style lang="scss">
-body {
-  cursor: none !important;
-}
-
 .page-fade-enter-active,
 .page-fade-leave-active {
   transition: opacity 0.35s ease;

@@ -1,14 +1,4 @@
-/* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-black: #000000;
-}
-
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--vt-c-black);
-  --color-text: var(--vt-c-white);
-
   --font-sans: Lato, sans-serif;
   --font-google: Quantico, sans-serif;
 }
@@ -19,12 +9,15 @@
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
+  color: #ffffff;
+  background: #000000;
   transition:
     color 0.5s,
     background-color 0.5s;
@@ -35,6 +28,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scrollbar-width: none;
+  overflow-x: hidden;
+  cursor: none !important;
 }
 
 h1,
@@ -47,6 +42,14 @@ a {
   font-family: var(--font-google, var(--font-sans));
 }
 
+h1 {
+  font-size: 2.4rem;
+}
+
+h4 {
+  font-size: 1.3rem;
+}
+
 a {
   text-decoration: none;
   color: white;
@@ -54,12 +57,4 @@ a {
   &.link-cursor:hover {
     cursor: pointer;
   }
-}
-
-h1 {
-  font-size: 2.4rem;
-}
-
-h4 {
-  font-size: 1.3rem;
 }

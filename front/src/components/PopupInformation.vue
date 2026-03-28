@@ -1,4 +1,3 @@
-<!-- PopupInformation.vue -->
 <script setup lang="ts">
 defineProps<{
   isActive: boolean,

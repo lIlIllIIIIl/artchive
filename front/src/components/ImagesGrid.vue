@@ -327,12 +327,6 @@ async function focusImage(_event: MouseEvent, index: number) {
 </template>
 
 <style lang="scss">
-* {
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 .wrapper {
   position: relative;
   display: grid;

@@ -124,7 +124,6 @@ onBeforeUnmount(() => {
 
 <style lang="scss">
 .global_menu {
-  // width: 100vw;
   display: flex;
   flex-direction: row;
   gap: 8px;
