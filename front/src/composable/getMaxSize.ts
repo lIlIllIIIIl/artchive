@@ -1,14 +1,10 @@
 export default function getMaxSize(
-  naturalWidth: number,
-  naturalHeight: number,
-  maxLen: number,
+  nbCols: number,
+  maxWidth: number,
+  maxHeight: number,
 ) {
-  const ratio = naturalWidth / naturalHeight;
-  let width = maxLen;
-  let height = width / ratio;
-  if (height > maxLen) {
-    height = maxLen;
-    width = height * ratio;
-  }
+
+  const width = maxWidth - (window.innerWidth / nbCols);
+  const height = maxHeight - (window.innerWidth / nbCols);
   return { width, height };
 }

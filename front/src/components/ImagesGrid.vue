@@ -201,11 +201,13 @@ function openImageAt(index: number) {
   }
   const rect = container.getBoundingClientRect()
   const mask = document.querySelector('.mask') as HTMLElement
+
   const newSize = getMaxSize(
-    image.clientWidth,
-    image.clientHeight,
-    (window.innerWidth / nbCols.value) * maxImageSizeInCols.value,
+    nbCols.value,
+    window.innerWidth,
+    window.innerHeight,
   )
+
   const item = initImagesUrlArray.value[index] as ImageWithAuthor | undefined
   const author = item?.author
   const link = author?.instagram || author?.shop || author?.twitter
@@ -221,12 +223,15 @@ function openImageAt(index: number) {
     overflow: 'visible',
     top: '50%',
     left: '50%',
-    width: newSize.width + 'px',
-    height: newSize.height + 'px',
+    // width: newSize.width + 'px',
+    // height: newSize.height + 'px',
+    height: 'auto',
+    width: 'auto',
     maxWidth: newSize.width + 'px',
+    maxHeight: newSize.height + 'px',
     xPercent: -50,
     yPercent: -50,
-    scale: 2,
+    scale: 1,
     zIndex: 20,
     duration: 0.2,
     ease: 'power1.out',

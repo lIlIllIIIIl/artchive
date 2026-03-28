@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { fetchAllArtists } from "@/composable/fetchData";
-import { RouterLink, useRoute } from "vue-router";
+import { RouterLink, useRoute } from 'vue-router';
+import { fetchAllArtists } from '@/composable/fetchData';
 
-const emit = defineEmits(["activatePopup", "disablePopup"]);
+const emit = defineEmits(['activatePopup', 'disablePopup']);
 
 const route = useRoute();
 
-const words = ref(["VueJS", "Animation", "Effet", "Hover"]);
-const currentWord = ref<string>("");
+const words = ref(['VueJS', 'Animation', 'Effet', 'Hover']);
+const currentWord = ref<string>('');
 const currentArtistIndex = ref(0);
 const isRevealDone = ref<boolean>(false);
-const displayText = ref<string>("");
+const displayText = ref<string>('');
 const revealInterval = ref<any>(null);
 const randomInterval = ref<any>(null);
-const artistUrl = ref<string>("/artist?artist=");
+const artistUrl = ref<string>('/artist?artist=');
 
 function getRandomChar() {
   const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&é(§è!çà)-_°@#$*ù%=+/?";
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&é(§è!çà)-_°@#$*ù%=+/?';
   return chars[Math.floor(Math.random() * chars.length)];
 }
 
@@ -32,7 +32,7 @@ function startRandomAnimation() {
     const randomLength = Math.floor(Math.random() * 2) + 6;
     displayText.value = Array.from({ length: randomLength }, () =>
       getRandomChar(),
-    ).join("");
+    ).join('');
   }, 80);
 }
 
@@ -40,7 +40,7 @@ function startReveal() {
   stopIntervals();
   // Choisir un mot au hasard et l’assigner à currentWord
 
-  if (words.value.length === 0) return;
+  if (words.value.length === 0) { return; }
 
   currentWord.value = words.value[currentArtistIndex.value];
   currentArtistIndex.value = (currentArtistIndex.value + 1) % words.value.length;
@@ -54,7 +54,7 @@ function startReveal() {
         currentWord.value.substring(0, index + 1) +
         Array.from({ length: currentWord.value.length - index - 1 }, () =>
           getRandomChar(),
-        ).join("");
+        ).join('');
       index++;
       artistUrl.value = `/artist?artist=${displayText.value}`;
     } else {
@@ -63,14 +63,14 @@ function startReveal() {
       isRevealDone.value = true;
     }
 
-    emit("activatePopup", `Click to see ${displayText.value}'s page'`);
+    emit('activatePopup', `Click to see ${displayText.value}'s page'`);
   }, 40);
 }
 
 function resetAnimation() {
   stopIntervals();
   startRandomAnimation();
-  emit("disablePopup");
+  emit('disablePopup');
 }
 
 async function updateWords() {
@@ -78,8 +78,8 @@ async function updateWords() {
   const currentArtist = route.query.artist as string | undefined;
   words.value = Array.isArray(artists)
     ? artists.map((a: { name: string }) => a.name).filter(
-        (name: string) => name.toLocaleLowerCase() !== currentArtist?.toLowerCase(),
-      )
+      (name: string) => name.toLocaleLowerCase() !== currentArtist?.toLowerCase(),
+    )
     : [];
 }
 

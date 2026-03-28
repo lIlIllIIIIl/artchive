@@ -285,7 +285,7 @@ const translationNoteText = computed(() => {
 
 .welcome_body_cjk {
   font-family:
-    "Hiragino Sans",
+    "Lato",
     "Hiragino Kaku Gothic ProN",
     "Noto Sans CJK JP",
     "PingFang SC",
