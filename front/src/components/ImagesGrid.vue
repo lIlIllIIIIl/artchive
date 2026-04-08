@@ -382,7 +382,7 @@ async function focusImage(_event: MouseEvent, index: number) {
   justify-content: center;
   gap: 12px;
   padding: 3rem 0 4rem;
-  cursor: pointer;
+  // cursor: pointer;
   transition: opacity 0.2s;
 
   &:hover {

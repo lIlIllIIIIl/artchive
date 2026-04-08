@@ -55,6 +55,6 @@ a {
   color: white;
 
   &.link-cursor:hover {
-    cursor: pointer;
+    /* cursor: pointer; */
   }
 }

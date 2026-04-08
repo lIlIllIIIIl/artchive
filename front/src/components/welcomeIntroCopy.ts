@@ -48,7 +48,7 @@ export const COPY: Record<WelcomeLocale, WelcomeCopyEntry> = {
       'This site is a personal project I made to highlight artists I especially appreciate.',
       'On the homepage, you can browse some of their work at random.',
       'The link next to it lets you explore one artist\'s world in particular.',
-      'Please do check out their works on their social media and online shops.',
+      'Please, do check out their works on their social media and online shops.',
     ],
     dismiss: 'Got it',
   },
