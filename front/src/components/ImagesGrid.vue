@@ -180,12 +180,16 @@ function closeFocusedImage() {
     scale: 1,
     zIndex: 1,
   }).to(image, {
-    clearProps: 'all',
+    clearProps: 'position,top,left,width,height,maxWidth,xPercent,yPercent,zIndex,overflow',
     onComplete: () => {
+      gsap.set(image, { scale: 1, clearProps: 'scale' })
       image.style.position = 'relative'
-      image.style.width = rect.width + 'px'
-      image.style.height = rect.height + 'px'
-      image.style.maxWidth = rect.width + 'px'
+      image.style.width = `${rect.width}px`
+      image.style.height = `${rect.height}px`
+      image.style.maxWidth = `${rect.width}px`
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        image.style.transform = 'none'
+      }
       document.body.style.overflow = ''
     },
   })
@@ -357,9 +361,11 @@ async function focusImage(_event: MouseEvent, index: number) {
         transform-origin: center right;
       }
 
-      &:hover {
-        transform: scale(1.2);
-        z-index: 10;
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          transform: scale(1.2);
+          z-index: 10;
+        }
       }
     }
   }
