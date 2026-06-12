@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import { gsap } from 'gsap';
 
+const enabled = ref(false);
+let cleanup: (() => void) | null = null;
+
 onMounted(() => {
-  const cursor = document.querySelector('.cursor') as HTMLElement;
+  const mediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+  if (!mediaQuery.matches) {
+    return;
+  }
 
-  if (cursor) {
-    document.addEventListener('mousemove', (event) => {
-      const xPos = event.clientX;
-      const yPos = event.clientY;
-      cursor.style.left = xPos - 15 + 'px';
-      cursor.style.top = yPos - 15 + 'px';
-    });
+  enabled.value = true;
 
-    document.addEventListener('click', () => {
+  nextTick(() => {
+    const cursor = document.querySelector('.cursor') as HTMLElement | null;
+    if (!cursor) {
+      return;
+    }
+
+    const onMouseMove = (event: MouseEvent) => {
+      cursor.style.left = `${event.clientX - 15}px`;
+      cursor.style.top = `${event.clientY - 15}px`;
+    };
+
+    const onClick = () => {
       const clickEvent = gsap.timeline();
       clickEvent
         .to(cursor, {
@@ -25,50 +36,50 @@ onMounted(() => {
           duration: 0.2,
           ease: 'power2.inOut',
         });
-    });
+    };
 
-    const hoverable = document.querySelectorAll(
-      '.hoverable:not(.router-link-active)',
-    );
     const mouseHover = gsap.to(cursor, {
       scale: 4,
       duration: 0.4,
       ease: 'power1.inOut',
       paused: true,
     });
-    hoverable.forEach((element) => {
-      element.addEventListener('mouseenter', () => {
-        mouseHover.play();
-      });
 
-      element.addEventListener('mouseleave', () => {
-        mouseHover.reverse();
-      });
-    });
-
-    //////////////////////////////
-    ////////// Observer //////////
-    //////////////////////////////
-    const observer = new MutationObserver(() => {
+    const bindHoverables = () => {
       document
         .querySelectorAll('.hoverable:not(.router-link-active)')
-        .forEach((hoverable) => {
-          hoverable.addEventListener('mouseenter', () => {
+        .forEach((element) => {
+          element.addEventListener('mouseenter', () => {
             mouseHover.play();
           });
-          hoverable.addEventListener('mouseleave', () => {
+          element.addEventListener('mouseleave', () => {
             mouseHover.reverse();
           });
         });
-    });
+    };
 
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('click', onClick);
+    bindHoverables();
+
+    const observer = new MutationObserver(bindHoverables);
     observer.observe(document.body, { childList: true, subtree: true });
-  }
+
+    cleanup = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('click', onClick);
+      observer.disconnect();
+    };
+  });
+});
+
+onUnmounted(() => {
+  cleanup?.();
 });
 </script>
 
 <template>
-  <div class="cursor" ref="cursor" />
+  <div v-if="enabled" class="cursor" />
 </template>
 
 <style lang="scss">

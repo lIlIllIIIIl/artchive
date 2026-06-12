@@ -166,7 +166,9 @@ const translationNoteText = computed(() => {
           font: inherit;
           font-size: 0.8rem;
           line-height: 1.2;
-          cursor: none !important;
+          @media (hover: hover) and (pointer: fine) {
+            cursor: none !important;
+          }
 
           &:hover {
             border-color: #191919;
@@ -210,7 +212,10 @@ const translationNoteText = computed(() => {
       color: #f2f2f2;
       font: inherit;
       font-size: 0.95rem;
-      cursor: none !important;
+
+      @media (hover: hover) and (pointer: fine) {
+        cursor: none !important;
+      }
 
       &:hover {
         opacity: 0.92;
@@ -227,7 +232,10 @@ const translationNoteText = computed(() => {
       text-decoration: underline;
       text-decoration-color: rgba(25, 25, 25, 0.35);
       text-underline-offset: 0.15em;
-      cursor: none !important;
+
+      @media (hover: hover) and (pointer: fine) {
+        cursor: none !important;
+      }
 
       &:hover {
         color: #191919;

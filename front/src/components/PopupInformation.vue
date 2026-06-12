@@ -43,8 +43,12 @@ defineProps<{
     a {
         color: black;
         text-decoration: none;
-        cursor: none !important;
+    }
 
+    @media (hover: hover) and (pointer: fine) {
+      a {
+        cursor: none !important;
+      }
     }
 
     .hoverable--underline:hover {
